@@ -1,5 +1,7 @@
 package com.alabamaor.moviesapp.view;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.widget.TextView;
@@ -16,6 +18,10 @@ import com.alabamaor.moviesapp.database.DatabaseHandler;
 import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity {
+
+    public static void start(AppCompatActivity activity) {
+      activity.startActivity(new Intent(activity, MainActivity.class));
+    }
 
     private NavController mNavController;
 

@@ -16,9 +16,6 @@
             android:id="@+id/action_to_scannerFragment"
             app:destination="@id/scannerFragment">
         </action>
-        <argument
-            android:name="addSuccess"
-            app:argType="boolean" />
 
     </fragment>
     <fragment
@@ -39,6 +36,11 @@
         <action
             android:id="@+id/action_scannerFragment_to_movieListFragment"
             app:destination="@id/movieListFragment">
+
+            <argument
+                android:name="@string/arg_success"
+                app:argType="boolean"
+                 />
 
         </action>
     </fragment>

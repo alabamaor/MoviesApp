@@ -11,7 +11,7 @@ import com.alabamaor.moviesapp.database.DatabaseHandler;
 import com.alabamaor.moviesapp.model.DatabaseDoneLoadingQuery;
 import com.alabamaor.moviesapp.model.Movie;
 
-public class ScannerViewModel extends AndroidViewModel implements DatabaseDoneLoadingQuery {
+public class ScannerViewModel extends AndroidViewModel  {
 
     MutableLiveData<Boolean> mIsAdded = new MutableLiveData<>();
 
@@ -20,13 +20,10 @@ public class ScannerViewModel extends AndroidViewModel implements DatabaseDoneLo
 
     public ScannerViewModel(@NonNull Application application) {
         super(application);
-        mDbHandler.setListener(this);
     }
 
     public void uploadMovie(Movie movie) {
-        mDbHandler.addMovie(movie);
-        mIsAdded.setValue(true);
-
+        mIsAdded.setValue(mDbHandler.addMovie(movie));
     }
 
     public MutableLiveData<Boolean> getIsAdded() {
@@ -36,10 +33,5 @@ public class ScannerViewModel extends AndroidViewModel implements DatabaseDoneLo
     public ScannerViewModel setIsAdded(MutableLiveData<Boolean> mIsAdded) {
         this.mIsAdded = mIsAdded;
         return this;
-    }
-
-    @Override
-    public void onAddMovie(boolean isAdded) {
-        Toast.makeText(getApplication().getApplicationContext(), ""+isAdded, Toast.LENGTH_SHORT).show();
     }
 }

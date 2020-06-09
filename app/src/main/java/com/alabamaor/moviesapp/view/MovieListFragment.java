@@ -27,25 +27,18 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-import static com.alabamaor.moviesapp.model.Util.FROM_SPLASH;
-
 public class MovieListFragment extends Fragment implements ListAdapter.ListItem {
-
 
     @BindView(R.id.recyclerView)
     RecyclerView mRecyclerView;
 
     private MovieListViewModel mViewModel;
     private ListAdapter mAdapter;
-
-    public static MovieListFragment newInstance() {
-        return new MovieListFragment();
-    }
+    boolean val = true;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-
         View view = inflater.inflate(R.layout.movie_list_fragment, container, false);
         ButterKnife.bind(this, view);
         setHasOptionsMenu(true);
@@ -59,10 +52,9 @@ public class MovieListFragment extends Fragment implements ListAdapter.ListItem 
 
         mViewModel = new ViewModelProvider(this).get(MovieListViewModel.class);
 
-        boolean val = getActivity().getIntent().getExtras().getBoolean(FROM_SPLASH);
-        if (!val) {
 
-        val = MovieListFragmentArgs.fromBundle(getArguments()).getAddSuccess();
+        if (getArguments() != null) {
+            val = getArguments().getBoolean(getString(R.string.arg_success));
         }
         mViewModel.getIsAddSuccess().setValue(val);
 
@@ -76,6 +68,7 @@ public class MovieListFragment extends Fragment implements ListAdapter.ListItem 
         observeData();
 
     }
+
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -91,13 +84,8 @@ public class MovieListFragment extends Fragment implements ListAdapter.ListItem 
         });
 
         mViewModel.getIsAddSuccess().observe(getViewLifecycleOwner(), isAddSuccess -> {
-            if (isAddSuccess != null) {
-                if (!isAddSuccess) {
+            if (isAddSuccess != null && isAddSuccess) {
                     Snackbar.make(getView(), getString(R.string.msg_movie_add), Snackbar.LENGTH_LONG).show();
-                }
-                else {
-                    Snackbar.make(getView(), isAddSuccess.toString(), Snackbar.LENGTH_LONG).show();
-                }
             }
         });
     }
@@ -111,12 +99,9 @@ public class MovieListFragment extends Fragment implements ListAdapter.ListItem 
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_add: {
-                NavDirections action = MovieListFragmentDirections.actionToScannerFragment();
-                Navigation.findNavController(getView()).navigate(action);
-                break;
-            }
+        if (item.getItemId() == R.id.action_add) {
+            NavDirections action = MovieListFragmentDirections.actionToScannerFragment();
+            Navigation.findNavController(getView()).navigate(action);
         }
 
         return super.onOptionsItemSelected(item);

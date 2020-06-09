@@ -6,10 +6,10 @@ import android.database.Cursor;
 import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.os.AsyncTask;
 
 import com.alabamaor.moviesapp.model.DatabaseDoneLoadingQuery;
 import com.alabamaor.moviesapp.model.Movie;
-import com.alabamaor.moviesapp.view.ListAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -126,9 +126,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     /**
      * @param movie
+     * @return
      */
-    public void addMovie(Movie movie) {
-
+    public boolean addMovie(Movie movie) {
         SQLiteDatabase db = this.getWritableDatabase();
         db.beginTransaction();
 
@@ -148,8 +148,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         db.setTransactionSuccessful();
         db.endTransaction();
         db.close();
-        mListener.onAddMovie(count==0);
 
+        return count != 0;
     }
 
 

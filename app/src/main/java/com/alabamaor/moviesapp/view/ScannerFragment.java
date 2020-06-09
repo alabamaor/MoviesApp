@@ -74,8 +74,8 @@ public class ScannerFragment extends Fragment {
 
         mViewModel.getIsAdded().observe(getViewLifecycleOwner(), isAdded -> {
             if (isAdded != null){
-                NavDirections action = ScannerFragmentDirections.actionScannerFragmentToMovieListFragment(isAdded);
-                Navigation.findNavController(getView()).navigate(action);
+                Navigation.findNavController(getView())
+                        .navigate(ScannerFragmentDirections.actionScannerFragmentToMovieListFragment(isAdded));
             }
         });
 

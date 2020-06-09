@@ -1,6 +1,7 @@
 package com.alabamaor.moviesapp.view;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,14 +10,13 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.swiperefreshlayout.widget.CircularProgressDrawable;
 
 import com.alabamaor.moviesapp.R;
 import com.alabamaor.moviesapp.model.Movie;
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 
+import java.net.URL;
 import java.util.List;
 
 import butterknife.BindView;
@@ -130,7 +130,6 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.JobViewHolder>
 
         }
 
-
-
     }
+
 }

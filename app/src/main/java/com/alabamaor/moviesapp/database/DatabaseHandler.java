@@ -7,7 +7,9 @@ import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import com.alabamaor.moviesapp.model.DatabaseDoneLoadingQuery;
 import com.alabamaor.moviesapp.model.Movie;
+import com.alabamaor.moviesapp.view.ListAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,7 +17,7 @@ import java.util.List;
 public class DatabaseHandler extends SQLiteOpenHelper {
 
     private static DatabaseHandler mInstance = null;
-
+    private DatabaseDoneLoadingQuery mListener;
 
     public static DatabaseHandler getInstance(Context context) {
         if (mInstance == null) {
@@ -126,20 +128,64 @@ public class DatabaseHandler extends SQLiteOpenHelper {
      * @param movie
      */
     public void addMovie(Movie movie) {
+
         SQLiteDatabase db = this.getWritableDatabase();
         db.beginTransaction();
-        addSingleMovie(db, movie);
+
+        String title = movie.getTitle();
+        title = title.replaceAll("'", "''");
+
+        Cursor cursor = db.rawQuery(DatabaseUtil.GET_ALL_FROM + DatabaseUtil.MOVIES_TABLE
+                + " WHERE " + DatabaseUtil.KEY_TITLE + "='"
+                + title + "'", null);
+        int count = cursor.getCount();
+        cursor.close();
+
+        if (count == 0) {
+            addSingleMovie(db, movie);
+
+        }
         db.setTransactionSuccessful();
         db.endTransaction();
         db.close();
+        mListener.onAddMovie(count==0);
+
     }
+
+
+    public DatabaseDoneLoadingQuery getListener() {
+        return mListener;
+    }
+
+    public void setListener(DatabaseDoneLoadingQuery listener) {
+        this.mListener = listener;
+    }
+//
+//    public boolean isMovieExist(String title) {
+//        title = title.replaceAll("'", "''");
+//
+//        SQLiteDatabase db = this.getWritableDatabase();
+//        db.beginTransaction();
+//
+//        Cursor cursor = db.rawQuery(DatabaseUtil.GET_ALL_FROM + DatabaseUtil.MOVIES_TABLE
+//                + " WHERE " + DatabaseUtil.KEY_TITLE + "='"
+//                + title + "'", null);
+//        int count = cursor.getCount();
+//        cursor.close();
+//
+//        db.setTransactionSuccessful();
+//        db.endTransaction();
+//        db.close();
+//
+//        return count == 0;
+//    }
 
 
     private List<String> getGenreList(SQLiteDatabase db, String title) {
         List<String> list = new ArrayList<>();
-        title = title.replaceAll("'" , "''");
+        title = title.replaceAll("'", "''");
         Cursor cursor = db.rawQuery(DatabaseUtil.GET_ALL_FROM + DatabaseUtil.GENRE_TABLE + " WHERE " + DatabaseUtil.KEY_MOVIE_TITLE + "='"
-                + title+"'", null);
+                + title + "'", null);
         if (cursor.moveToFirst()) {
             while (!cursor.isAfterLast()) {
                 list.add(cursor.getString(cursor.getColumnIndex(DatabaseUtil.KEY_GENRE)));

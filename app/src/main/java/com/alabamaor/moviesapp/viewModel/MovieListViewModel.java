@@ -16,6 +16,7 @@ import java.util.List;
 public class MovieListViewModel extends AndroidViewModel {
 
     private MutableLiveData<List<Movie>> mList = new MutableLiveData<>();
+    private MutableLiveData<Boolean> mIsAddSuccess = new MutableLiveData<>();
 
     private DatabaseHandler mDbHandler = DatabaseHandler.getInstance(getApplication().getApplicationContext());
 
@@ -34,6 +35,15 @@ public class MovieListViewModel extends AndroidViewModel {
 
     public MovieListViewModel setList(MutableLiveData<List<Movie>> mList) {
         this.mList = mList;
+        return this;
+    }
+
+    public MutableLiveData<Boolean> getIsAddSuccess() {
+        return mIsAddSuccess;
+    }
+
+    public MovieListViewModel setIsAddSuccess(MutableLiveData<Boolean> mIsAddSuccess) {
+        this.mIsAddSuccess = mIsAddSuccess;
         return this;
     }
 }

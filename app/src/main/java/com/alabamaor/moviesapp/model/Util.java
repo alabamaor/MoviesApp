@@ -15,6 +15,7 @@ import com.bumptech.glide.request.transition.Transition;
 
 public class Util {
 
+    public static final String FROM_SPLASH = "FromSplash";
 
     public static CircularProgressDrawable getProgressDrawable(Context context) {
         CircularProgressDrawable cpd = new CircularProgressDrawable(context);

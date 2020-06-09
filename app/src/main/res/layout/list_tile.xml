@@ -49,6 +49,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="2020"
+            android:gravity="end"
             style="@style/MovieTitle"
             app:layout_constraintWidth_percent="0.2"
             app:layout_constraintBottom_toBottomOf="@id/tvMovieTitle"

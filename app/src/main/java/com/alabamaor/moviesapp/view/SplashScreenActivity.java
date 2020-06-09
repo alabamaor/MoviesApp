@@ -27,8 +27,9 @@ public class SplashScreenActivity extends AppCompatActivity {
         mViewModel.getIsLoadingDone().observe(this, isLoading -> {
             if (isLoading != null) {
                 if (isLoading){
-                    Intent intent = new Intent(this, MainActivity.class);
-                    startActivity(intent);
+                    Intent i = new Intent(this, MainActivity.class);
+                     i.putExtra("FromSplash", true);
+                    startActivity(i);
                     finish();
                 }
             }

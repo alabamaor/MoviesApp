@@ -85,12 +85,13 @@ public class MovieDetailsFragment extends Fragment {
         if (getArguments() != null) {
             mViewModel.setSelectedMovie(MovieDetailsFragmentArgs.fromBundle(getArguments()).getSelectedMovie());
         }
+        ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle("");
+
         observeData();
     }
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle("");
     }
 
     private void observeData() {

@@ -1,4 +1,6 @@
 <resources>
     <string name="app_name">MoviesApp</string>
     <string name="add_movie">Add movie</string>
+    <string name="no_permission">Please allow camera permission</string>
+    <string name="msg_movie_add">Current movie already exist in the Database</string>
 </resources>

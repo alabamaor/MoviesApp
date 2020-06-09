@@ -3,7 +3,6 @@ package com.alabamaor.moviesapp.view;
 import android.Manifest;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,7 +10,6 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavDirections;
@@ -22,10 +20,9 @@ import com.alabamaor.moviesapp.model.Movie;
 import com.alabamaor.moviesapp.viewModel.ScannerViewModel;
 import com.budiyev.android.codescanner.CodeScanner;
 import com.budiyev.android.codescanner.CodeScannerView;
-import com.budiyev.android.codescanner.DecodeCallback;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
-import com.google.zxing.Result;
+import com.google.gson.JsonParseException;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -66,20 +63,30 @@ public class ScannerFragment extends Fragment {
         mCodeScanner = new CodeScanner(getContext(), scannerView);
         mCodeScanner.setDecodeCallback(result -> getActivity().runOnUiThread(() -> {
             Gson gson = new Gson();
-            mViewModel.uploadMovie(gson.fromJson(result.toString(), Movie.class));
+            try {
+                mViewModel.uploadMovie(gson.fromJson(result.getText(), Movie.class));
+            } catch (JsonParseException e) {
+                Toast.makeText(getContext(), "QR not support", Toast.LENGTH_SHORT).show();
+                mCodeScanner.stopPreview();
+                Navigation.findNavController(getView()).popBackStack();
 
-            Log.i("ALABAMA",result.getText());
+            }
+
         }));
-        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("");
 
         mViewModel.getIsAdded().observe(getViewLifecycleOwner(), isAdded -> {
-            if (isAdded != null){
-                Navigation.findNavController(getView())
-                        .navigate(ScannerFragmentDirections.actionScannerFragmentToMovieListFragment(isAdded));
+            if (isAdded != null) {
+                Snackbar.make(getView(),
+                        isAdded ? getString(R.string.msg_add_movie) :
+                                getString(R.string.msg_movie_exist), Snackbar.LENGTH_LONG).show();
+
+                NavDirections action = ScannerFragmentDirections.actionScannerFragmentToMovieListFragment();
+                Navigation.findNavController(getView()).navigate(action);
             }
         });
 
     }
+
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {

@@ -7,21 +7,18 @@
     <fragment
         android:id="@+id/movieListFragment"
         android:name="com.alabamaor.moviesapp.view.MovieListFragment"
-        android:label="movie_list_fragment"
         tools:layout="@layout/movie_list_fragment">
         <action
             android:id="@+id/action_toMovieDetailsFragment"
             app:destination="@id/movieDetailsFragment" />
         <action
             android:id="@+id/action_to_scannerFragment"
-            app:destination="@id/scannerFragment">
-        </action>
+            app:destination="@id/scannerFragment" />
 
     </fragment>
     <fragment
         android:id="@+id/movieDetailsFragment"
         android:name="com.alabamaor.moviesapp.view.MovieDetailsFragment"
-        android:label="movie_details_fragment"
         tools:layout="@layout/movie_details_fragment">
         <argument
             android:name="selectedMovie"
@@ -31,16 +28,11 @@
     <fragment
         android:id="@+id/scannerFragment"
         android:name="com.alabamaor.moviesapp.view.ScannerFragment"
-        android:label="scanner_fragment"
+
         tools:layout="@layout/scanner_fragment">
         <action
             android:id="@+id/action_scannerFragment_to_movieListFragment"
             app:destination="@id/movieListFragment">
-
-            <argument
-                android:name="@string/arg_success"
-                app:argType="boolean"
-                 />
 
         </action>
     </fragment>

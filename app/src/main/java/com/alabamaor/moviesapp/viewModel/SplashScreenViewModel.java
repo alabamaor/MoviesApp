@@ -41,8 +41,7 @@ public class SplashScreenViewModel extends AndroidViewModel {
         mMoviesCount = mDbHandler.getCount();
         if (mMoviesCount <= 0) {
             getMovies();
-        }
-        else {
+        } else {
             mIsLoadingDone.setValue(true);
         }
     }
@@ -80,20 +79,6 @@ public class SplashScreenViewModel extends AndroidViewModel {
 
     public MutableLiveData<Boolean> getIsLoadingDone() {
         return mIsLoadingDone;
-    }
-
-    public SplashScreenViewModel setIsLoadingDone(MutableLiveData<Boolean> mIsLoading) {
-        this.mIsLoadingDone = mIsLoading;
-        return this;
-    }
-
-    public MutableLiveData<Boolean> getHasError() {
-        return mHasError;
-    }
-
-    public SplashScreenViewModel setHasError(MutableLiveData<Boolean> mHasError) {
-        this.mHasError = mHasError;
-        return this;
     }
 
 

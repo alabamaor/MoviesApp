@@ -10,7 +10,6 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavDirections;
@@ -20,7 +19,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.alabamaor.moviesapp.R;
 import com.alabamaor.moviesapp.model.Movie;
 import com.alabamaor.moviesapp.viewModel.MovieListViewModel;
-import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
 
@@ -34,7 +32,6 @@ public class MovieListFragment extends Fragment implements ListAdapter.ListItem 
 
     private MovieListViewModel mViewModel;
     private ListAdapter mAdapter;
-    boolean val = true;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -51,15 +48,6 @@ public class MovieListFragment extends Fragment implements ListAdapter.ListItem 
         super.onViewCreated(view, savedInstanceState);
 
         mViewModel = new ViewModelProvider(this).get(MovieListViewModel.class);
-
-
-        if (getArguments() != null) {
-            val = getArguments().getBoolean(getString(R.string.arg_success));
-        }
-        mViewModel.getIsAddSuccess().setValue(val);
-
-        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("");
-
 
         mAdapter = new ListAdapter(new ArrayList<>(), getContext());
         mAdapter.setListItemListener(this);
@@ -83,11 +71,7 @@ public class MovieListFragment extends Fragment implements ListAdapter.ListItem 
             }
         });
 
-        mViewModel.getIsAddSuccess().observe(getViewLifecycleOwner(), isAddSuccess -> {
-            if (isAddSuccess != null && isAddSuccess) {
-                    Snackbar.make(getView(), getString(R.string.msg_movie_add), Snackbar.LENGTH_LONG).show();
-            }
-        });
+
     }
 
 

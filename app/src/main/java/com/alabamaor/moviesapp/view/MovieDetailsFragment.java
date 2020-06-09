@@ -1,35 +1,28 @@
 package com.alabamaor.moviesapp.view;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.AppCompatImageView;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelProviders;
-
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.palette.graphics.Palette;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.widget.AppCompatImageView;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.palette.graphics.Palette;
+
 import com.alabamaor.moviesapp.R;
 import com.alabamaor.moviesapp.viewModel.MovieDetailsViewModel;
-import com.alabamaor.moviesapp.viewModel.MovieListViewModel;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.transition.Transition;
-
-import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -85,10 +78,10 @@ public class MovieDetailsFragment extends Fragment {
         if (getArguments() != null) {
             mViewModel.setSelectedMovie(MovieDetailsFragmentArgs.fromBundle(getArguments()).getSelectedMovie());
         }
-        ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle("");
 
         observeData();
     }
+
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -96,11 +89,11 @@ public class MovieDetailsFragment extends Fragment {
 
     private void observeData() {
         mViewModel.getmSelectedMovie().observe(getViewLifecycleOwner(), movie -> {
-            if (movie != null){
+            if (movie != null) {
 
-               mTitle.setText(movie.getTitle());
-               mReleaseYear.setText(String.valueOf(movie.getReleaseYear()));
-               mRating.setText(String.valueOf(movie.getRating()));
+                mTitle.setText(movie.getTitle());
+                mReleaseYear.setText(String.valueOf(movie.getReleaseYear()));
+                mRating.setText(String.valueOf(movie.getRating()));
 
                 RequestOptions options = new RequestOptions()
                         .placeholder(getProgressDrawable(getContext()))
@@ -114,10 +107,10 @@ public class MovieDetailsFragment extends Fragment {
 
             String genreStr = "";
             StringBuilder builder = new StringBuilder(genreStr);
-            for (int i = 0 ; i < movie.getGenre().size() ; i ++) {
+            for (int i = 0; i < movie.getGenre().size(); i++) {
                 builder.append(genreStr + movie.getGenre().get(i));
-                if (i < movie.getGenre().size() -1){
-                builder.append(genreStr + " / ");
+                if (i < movie.getGenre().size() - 1) {
+                    builder.append(genreStr + " / ");
                 }
             }
             mGenre.setText(builder);
@@ -127,7 +120,7 @@ public class MovieDetailsFragment extends Fragment {
     }
 
 
-    public  void setupBackgroundColor(Context context, String url) {
+    public void setupBackgroundColor(Context context, String url) {
         Glide.with(context)
                 .asBitmap()
                 .load(url)
@@ -137,10 +130,10 @@ public class MovieDetailsFragment extends Fragment {
                         Palette.from(resource)
                                 .generate(palette -> {
 
-                                    int intColor = palette.getDarkMutedColor(Color.rgb(20,20,20));
+                                    int intColor = palette.getDarkMutedColor(Color.rgb(20, 20, 20));
 
-                                        mShadeViewDetail.setBackgroundColor(intColor);
-                                        mShadeViewDetailHead.setBackgroundColor(intColor);
+                                    mShadeViewDetail.setBackgroundColor(intColor);
+                                    mShadeViewDetailHead.setBackgroundColor(intColor);
 
                                 });
                     }

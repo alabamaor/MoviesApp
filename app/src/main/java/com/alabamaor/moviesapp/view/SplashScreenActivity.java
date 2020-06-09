@@ -1,10 +1,9 @@
 package com.alabamaor.moviesapp.view;
 
+import android.os.Bundle;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
-
-import android.content.Intent;
-import android.os.Bundle;
 
 import com.alabamaor.moviesapp.R;
 import com.alabamaor.moviesapp.viewModel.SplashScreenViewModel;
@@ -22,12 +21,13 @@ public class SplashScreenActivity extends AppCompatActivity {
         mViewModel.init();
         observeData();
     }
+
     private void observeData() {
         mViewModel.getIsLoadingDone().observe(this, isFinish -> {
             if (isFinish != null) {
-                if (isFinish){
+                if (isFinish) {
                     MainActivity.start(this);
-               }
+                }
             }
         });
 

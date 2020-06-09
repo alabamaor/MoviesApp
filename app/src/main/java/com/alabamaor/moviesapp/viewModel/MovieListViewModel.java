@@ -5,18 +5,15 @@ import android.app.Application;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.ViewModel;
 
 import com.alabamaor.moviesapp.database.DatabaseHandler;
 import com.alabamaor.moviesapp.model.Movie;
-import com.alabamaor.moviesapp.view.ListAdapter;
 
 import java.util.List;
 
 public class MovieListViewModel extends AndroidViewModel {
 
     private MutableLiveData<List<Movie>> mList = new MutableLiveData<>();
-    private MutableLiveData<Boolean> mIsAddSuccess = new MutableLiveData<>();
 
     private DatabaseHandler mDbHandler = DatabaseHandler.getInstance(getApplication().getApplicationContext());
 
@@ -33,17 +30,5 @@ public class MovieListViewModel extends AndroidViewModel {
         return mList;
     }
 
-    public MovieListViewModel setList(MutableLiveData<List<Movie>> mList) {
-        this.mList = mList;
-        return this;
-    }
 
-    public MutableLiveData<Boolean> getIsAddSuccess() {
-        return mIsAddSuccess;
-    }
-
-    public MovieListViewModel setIsAddSuccess(MutableLiveData<Boolean> mIsAddSuccess) {
-        this.mIsAddSuccess = mIsAddSuccess;
-        return this;
-    }
 }

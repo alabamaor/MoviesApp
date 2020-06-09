@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal"
+    tools:context=".view.MovieDetailsFragment">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_vertical">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:context=".view.MovieDetailsFragment">
+
+
+            <View
+                android:id="@+id/shadeViewDetail"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:background="#90000000"
+                app:layout_constraintBottom_toBottomOf="@id/tvDetailMovieTitle"
+                app:layout_constraintTop_toTopOf="@id/tvDetailMovieTitle"
+                tools:layout_editor_absoluteX="0dp" />
+
+            <View
+                android:id="@+id/shadeViewDetailHead"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:background="#90000000"
+                app:layout_constraintBottom_toBottomOf="@id/tvDetailMovieGenre"
+                app:layout_constraintTop_toTopOf="@id/tvDetailMovieGenre"
+                tools:layout_editor_absoluteX="0dp" />
+
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/appCompatImageView2"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:layout_marginEnd="10dp"
+                android:src="@drawable/ic_stars"
+                app:layout_constraintBottom_toBottomOf="@id/tvDetailMovieGenre"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/tvDetailMovieGenre" />
+
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/ivDetailMovieImg"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:scaleType="centerCrop"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHeight_percent="0.6"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tvDetailMovieGenre"
+                app:srcCompat="@drawable/movies_background" />
+
+           <TextView
+               android:id="@+id/tvDetailMovieGenre"
+               style="@style/MovieSubTitle"
+               android:layout_width="0dp"
+               android:layout_height="wrap_content"
+               android:text="Genre / Genre / Genre / Genre / Genre / Genre / "
+               app:layout_constraintStart_toStartOf="parent"
+               app:layout_constraintTop_toTopOf="parent"
+               app:layout_constraintBottom_toTopOf="@id/ivDetailMovieImg"
+               app:layout_constraintWidth_percent="0.7" />
+
+           <TextView
+               android:id="@+id/tvDetailMovieTitle"
+               style="@style/MovieTitle"
+               android:layout_width="0dp"
+               android:layout_height="0dp"
+               android:gravity="center_vertical"
+               android:paddingBottom="10dp"
+               android:text="Some Long Movie Title Some Long Movie Title"
+               app:layout_constraintBottom_toBottomOf="parent"
+               app:layout_constraintStart_toStartOf="@id/shadeViewDetail"
+               app:layout_constraintTop_toBottomOf="@id/ivDetailMovieImg"
+               app:layout_constraintWidth_percent="0.7" />
+
+
+           <TextView
+               android:id="@+id/tvDetailMovieReleaseYear"
+               style="@style/MovieTitle"
+               android:layout_width="0dp"
+               android:layout_height="wrap_content"
+               android:gravity="end"
+               android:text="2020"
+               app:layout_constraintBottom_toBottomOf="@id/tvDetailMovieTitle"
+               app:layout_constraintEnd_toEndOf="@id/shadeViewDetail"
+               app:layout_constraintStart_toEndOf="@+id/tvDetailMovieTitle"
+               app:layout_constraintTop_toTopOf="@id/tvDetailMovieTitle"
+               app:layout_constraintWidth_percent="0.2" />
+
+
+           <TextView
+               android:id="@+id/tvDetailMovieRating"
+               style="@style/MovieTitle"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:layout_marginEnd="40dp"
+               android:gravity="end"
+               android:text="7.8"
+               app:layout_constraintBottom_toBottomOf="@+id/appCompatImageView2"
+               app:layout_constraintEnd_toEndOf="@+id/appCompatImageView2"
+               app:layout_constraintTop_toTopOf="@+id/appCompatImageView2" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
+</LinearLayout>

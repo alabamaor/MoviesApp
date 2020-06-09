@@ -1,11 +1,14 @@
 package com.alabamaor.moviesapp.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class Movie {
+public class Movie implements Parcelable {
 
     int id;
 
@@ -56,6 +59,27 @@ public class Movie {
         this.genre = new ArrayList<>();
         this.genre.addAll(genre);
     }
+
+    protected Movie(Parcel in) {
+        id = in.readInt();
+        title = in.readString();
+        image = in.readString();
+        rating = in.readFloat();
+        releaseYear = in.readInt();
+        genre = in.createStringArrayList();
+    }
+
+    public static final Creator<Movie> CREATOR = new Creator<Movie>() {
+        @Override
+        public Movie createFromParcel(Parcel in) {
+            return new Movie(in);
+        }
+
+        @Override
+        public Movie[] newArray(int size) {
+            return new Movie[size];
+        }
+    };
 
     public int getId() {
         return id;
@@ -109,5 +133,21 @@ public class Movie {
     public Movie setGenre(List<String> genre) {
         this.genre = genre;
         return this;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeDouble(id);
+        dest.writeString(image);
+        dest.writeString(title);
+        dest.writeFloat(rating);
+        dest.writeInt(releaseYear);
+        dest.writeStringList(genre);
+
     }
 }

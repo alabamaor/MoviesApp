@@ -3,16 +3,23 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/app_navigator"
-    app:startDestination="@id/splashScreenActivity">
-
-    <activity
-        android:id="@+id/splashScreenActivity"
-        android:name="com.alabamaor.moviesapp.view.SplashScreenActivity"
-        android:label="activity_splash_screen"
-        tools:layout="@layout/activity_splash_screen" />
-    <activity
-        android:id="@+id/mainActivity"
-        android:name="com.alabamaor.moviesapp.view.MainActivity"
-        android:label="activity_main"
-        tools:layout="@layout/activity_main" />
+    app:startDestination="@id/movieListFragment">
+    <fragment
+        android:id="@+id/movieListFragment"
+        android:name="com.alabamaor.moviesapp.view.MovieListFragment"
+        android:label="movie_list_fragment"
+        tools:layout="@layout/movie_list_fragment" >
+        <action
+            android:id="@+id/action_toMovieDetailsFragment"
+            app:destination="@id/movieDetailsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/movieDetailsFragment"
+        android:name="com.alabamaor.moviesapp.view.MovieDetailsFragment"
+        android:label="movie_details_fragment"
+        tools:layout="@layout/movie_details_fragment" >
+        <argument
+            android:name="selectedMovie"
+            app:argType="com.alabamaor.moviesapp.model.Movie" />
+    </fragment>
 </navigation>

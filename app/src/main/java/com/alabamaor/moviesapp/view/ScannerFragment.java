@@ -80,8 +80,7 @@ public class ScannerFragment extends Fragment {
                         isAdded ? getString(R.string.msg_add_movie) :
                                 getString(R.string.msg_movie_exist), Snackbar.LENGTH_LONG).show();
 
-                NavDirections action = ScannerFragmentDirections.actionScannerFragmentToMovieListFragment();
-                Navigation.findNavController(getView()).navigate(action);
+                Navigation.findNavController(getView()).popBackStack();
             }
         });
 

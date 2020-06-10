@@ -20,8 +20,6 @@ import io.reactivex.schedulers.Schedulers;
 public class SplashScreenViewModel extends AndroidViewModel {
 
     private MutableLiveData<Boolean> mIsLoadingDone = new MutableLiveData<>();
-    private MutableLiveData<Boolean> mHasError = new MutableLiveData<>();
-
 
     private long mMoviesCount;
 
@@ -59,21 +57,39 @@ public class SplashScreenViewModel extends AndroidViewModel {
                         .subscribeWith(new DisposableSingleObserver<List<Movie>>() {
                             @Override
                             public void onSuccess(List<Movie> movies) {
-                                mHasError.setValue(false);
-                                mIsLoadingDone.setValue(true);
                                 mMoviesCount = movies.size();
-                                mDbHandler.addMovies(movies);
+                                addMoviesToDB(movies);
                             }
 
                             @Override
                             public void onError(Throwable e) {
                                 mMoviesCount = 0;
-                                mHasError.setValue(true);
                             }
                         })
 
         );
 
+    }
+
+    private void addMoviesToDB(List<Movie> movies) {
+        mDisposable.add(
+                mDbHandler.addMovies(movies)
+                        .subscribeOn(Schedulers.newThread())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribeWith(new DisposableSingleObserver<Boolean>() {
+
+                            @Override
+                            public void onSuccess(Boolean isComplete) {
+                                mIsLoadingDone.setValue(true);
+                            }
+
+                            @Override
+                            public void onError(Throwable e) {
+                                mIsLoadingDone.setValue(true);
+                            }
+                        })
+
+        );
     }
 
 

@@ -12,6 +12,8 @@ import com.alabamaor.moviesapp.model.Movie;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.reactivex.Single;
+
 public class DatabaseHandler extends SQLiteOpenHelper {
 
     private static DatabaseHandler mInstance = null;
@@ -51,16 +53,15 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-
         db.execSQL(DatabaseUtil.DROP_TABLE_EXEC_SQL, new String[]{DatabaseUtil.MOVIES_TABLE});
         onCreate(db);
     }
+
 
     public long getCount() {
         SQLiteDatabase db = this.getReadableDatabase();
         long count = DatabaseUtils.queryNumEntries(db, DatabaseUtil.MOVIES_TABLE);
         db.close();
-
         return count;
     }
 
@@ -77,11 +78,10 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     /**
      * @return
      */
-    public List<Movie> getAllMovies() {
+    public Single<List<Movie>> getAllMovies() {
         List<Movie> movies = new ArrayList<>();
         Movie movie;
         SQLiteDatabase db = this.getReadableDatabase();
-        db.beginTransaction();
 
         Cursor cursor = db.rawQuery(DatabaseUtil.GET_ALL_FROM + DatabaseUtil.MOVIES_TABLE
                 + " ORDER BY " + DatabaseUtil.KEY_RELEASE_YEAR + " DESC", null);
@@ -100,25 +100,31 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             }
         }
 
-        db.setTransactionSuccessful();
-        db.endTransaction();
         cursor.close();
         db.close();
-        return movies;
+        return Single.just(movies);
     }
 
     /**
      * @param moviesList
      */
-    public void addMovies(List<Movie> moviesList) {
+    public Single<Boolean> addMovies(List<Movie> moviesList) {
         SQLiteDatabase db = this.getWritableDatabase();
-        db.beginTransaction();
-        for (Movie movie : moviesList) {
-            addSingleMovie(db, movie);
+        Boolean isComplete = true;
+
+        try {
+            db.beginTransaction();
+            for (Movie movie : moviesList) {
+                addSingleMovie(db, movie);
+            }
+            db.setTransactionSuccessful();
+        } catch (Exception e) {
+            isComplete = false;
+        } finally {
+            db.endTransaction();
+            db.close();
         }
-        db.setTransactionSuccessful();
-        db.endTransaction();
-        db.close();
+        return Single.just(isComplete);
     }
 
     /**
@@ -127,14 +133,13 @@ public class DatabaseHandler extends SQLiteOpenHelper {
      */
     public boolean addMovie(Movie movie) {
         SQLiteDatabase db = this.getWritableDatabase();
-        db.beginTransaction();
 
         String title = movie.getTitle();
         title = title.replaceAll("'", "''");
 
         Cursor cursor = db.rawQuery(DatabaseUtil.GET_ALL_FROM + DatabaseUtil.MOVIES_TABLE
-                + " WHERE " + DatabaseUtil.KEY_TITLE + "='"
-                + title + "'", null);
+                        + " WHERE " + DatabaseUtil.KEY_TITLE + "= ? AND " + DatabaseUtil.KEY_RELEASE_YEAR + "= ?",
+                new String[]{title, String.valueOf(movie.getReleaseYear())});
         int count = cursor.getCount();
         cursor.close();
 
@@ -143,10 +148,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             addSingleMovie(db, movie);
 
         }
-        db.setTransactionSuccessful();
-        db.endTransaction();
         db.close();
-
         return isAdded;
     }
 
@@ -154,8 +156,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private List<String> getGenreList(SQLiteDatabase db, String title) {
         List<String> list = new ArrayList<>();
         title = title.replaceAll("'", "''");
-        Cursor cursor = db.rawQuery(DatabaseUtil.GET_ALL_FROM + DatabaseUtil.GENRE_TABLE + " WHERE " + DatabaseUtil.KEY_MOVIE_TITLE + "='"
-                + title + "'", null);
+        Cursor cursor = db.rawQuery(DatabaseUtil.GET_ALL_FROM + DatabaseUtil.GENRE_TABLE + " WHERE "
+                        + DatabaseUtil.KEY_MOVIE_TITLE + "= ?",
+                new String[]{title});
         if (cursor.moveToFirst()) {
             while (!cursor.isAfterLast()) {
                 list.add(cursor.getString(cursor.getColumnIndex(DatabaseUtil.KEY_GENRE)));
